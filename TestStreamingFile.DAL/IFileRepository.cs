@@ -7,8 +7,11 @@ namespace TestStreamingFile.DAL
 {
     public interface IFileRepository
     {
+        int ActiveAddress(int id);
+        int AddAddressPath(string path);
         IEnumerable<FileDescriptionShort> AddFileDescriptions(FileResult fileResult);
-
+        Address GetActiveAddress();
+        string GetAddressPath(int id);
         IEnumerable<FileDescriptionShort> GetAllFiles();
 
         FileDescription GetFileDescription(int id);

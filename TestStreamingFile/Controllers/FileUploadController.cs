@@ -23,7 +23,6 @@ namespace TestStreamingFile.Controllers
             _fileRepository = fileRepository;
             _optionsApplicationConfiguration = o;
         }
-
         [Route("upload")]
         [HttpPost]
         [ServiceFilter(typeof(ValidateMimeMultipartContentFilter))]
@@ -31,6 +30,7 @@ namespace TestStreamingFile.Controllers
         {
             var names = new List<string>();
             var contentTypes = new List<string>();
+            var addresspath = _fileRepository.GetActiveAddress();
             if (ModelState.IsValid)
             {
                 foreach (var file in fileDescriptionShort.File)
@@ -43,7 +43,10 @@ namespace TestStreamingFile.Controllers
                         names.Add(fileName);
 
                         // Extension method update RC2 has removed this 
-                        await file.SaveAsAsync(Path.Combine(_optionsApplicationConfiguration.Value.ServerUploadFolder, fileName));
+                        //await file.SaveAsAsync(Path.Combine(_optionsApplicationConfiguration.Value.ServerUploadFolder, fileName));
+                        
+                        await file.SaveAsAsync(Path.Combine(addresspath.UNCPath, fileName));
+
                     }
                 }
             }
@@ -55,6 +58,7 @@ namespace TestStreamingFile.Controllers
                 Description = fileDescriptionShort.Description,
                 CreatedTimestamp = DateTime.UtcNow,
                 UpdatedTimestamp = DateTime.UtcNow,
+                AddressPath=addresspath.Id
             };
 
             _fileRepository.AddFileDescriptions(files);
@@ -68,7 +72,9 @@ namespace TestStreamingFile.Controllers
         {
             var fileDescription = _fileRepository.GetFileDescription(id);
 
-            var path = _optionsApplicationConfiguration.Value.ServerUploadFolder + "\\" + fileDescription.FileName;
+            //var path = _optionsApplicationConfiguration.Value.ServerUploadFolder + "\\" + fileDescription.FileName;
+            var tablepath = _fileRepository.GetAddressPath(fileDescription.AddressPath);
+            var path = tablepath + "\\" + fileDescription.FileName;
             var stream = new FileStream(path, FileMode.Open);
             return File(stream, fileDescription.ContentType);
         }

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TestStreamingFile.DAL;
 
 namespace TestStreamingFile.DAL.Migrations
 {
     [DbContext(typeof(FileContext))]
-    partial class FileContextModelSnapshot : ModelSnapshot
+    [Migration("20200213135003_addAddressPath")]
+    partial class addAddressPath
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

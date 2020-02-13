@@ -11,5 +11,6 @@ namespace TestStreamingFile.DAL.Models
         public DateTime CreatedTimestamp { get; set; }
         public DateTime UpdatedTimestamp { get; set; }
         public List<string> ContentTypes { get; set; }
+        public int AddressPath { get; set; }
     }
 }

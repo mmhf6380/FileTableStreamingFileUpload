@@ -11,11 +11,14 @@ namespace TestStreamingFile.DAL
         public FileContext(DbContextOptions<FileContext> options) : base(options) { }
 
         public DbSet<FileDescription> FileDescriptions { get; set; }
+        public DbSet<Address> Addresses { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<FileDescription>().HasKey(m => m.Id);
             base.OnModelCreating(builder);
+            builder.Entity<FileDescription>().HasKey(m => m.Id);
+            builder.ApplyConfiguration(new AddressConfig());
         }
+
     }
 }
